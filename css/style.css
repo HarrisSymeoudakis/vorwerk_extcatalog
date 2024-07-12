@@ -11111,8 +11111,16 @@
                   margin-bottom: 2rem;
                 }
                 .portfolio-modal .modal-content img {
-                  margin-bottom: 2rem;
-                }
+    margin-bottom: 2rem;
+    height: 250px;
+    width: 250px;
+}
+
+.portfolio-modal .modal-content .close-modal img {
+    margin-bottom: 2rem;
+    height: 50px;
+    width: 50px;
+}
                 .portfolio-modal .close-modal {
                   position: absolute;
                   top: 1.5rem;
