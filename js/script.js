@@ -1,3 +1,104 @@
+function searchOnClick(event) {
+  event.preventDefault(); // Prevent form submission
+  fetchAndDisplayOrders();
+}
+
+// Attach searchOnClick function to search button click event
+document
+  .getElementById("searchButton")
+  .addEventListener("click", searchOnClick);
+
+// Function to fetch data and display portfolio items
+async function fetchAndDisplayOrders() {
+  const portfolioItemsContainer = document.getElementById("portfolioItems");
+  portfolioItemsContainer.innerHTML = ""; // Clear previous portfolio items
+
+  // Get input values from form fields
+  const itemCodeInput = document
+    .getElementById("input1")
+    .value.trim()
+    .toLowerCase();
+  const descriptionInput = document
+    .getElementById("input2")
+    .value.trim()
+    .toLowerCase();
+  const barcodeInput = document
+    .getElementById("input3")
+    .value.trim()
+    .toLowerCase();
+  const weeCostInput = document
+    .getElementById("input4")
+    .value.trim()
+    .toLowerCase();
+  const priceFromInput = parseInt(
+    document.getElementById("input5").value.trim(),
+    10
+  );
+  const priceToInput = parseInt(
+    document.getElementById("input6").value.trim(),
+    10
+  );
+
+  try {
+    // Fetch items data from API
+    const response = await fetch(
+      "https://extcatalog-mq-server.onrender.com/items"
+    );
+    const data = await response.json();
+
+    console.log(data);
+
+    // Iterate over each item and filter based on search criteria
+    data.forEach((item) => {
+      const itemCode = item.identifier.id;
+      const barcode = item.identifier.barcode;
+      const description = item.description;
+      const price = item.price.taxIncludedPrice;
+      const imgUrl = item.imgUrl;
+      const warehouseId = item.warehouseId;
+      const userFields = item.userFields;
+      const weeCost = userFields[0]?.value?.text; // Safely access weeCost
+      //  console.log(userFields[1].value.text);
+      const userFields2 = userFields[1]?.value?.number; // Safely access userFields2
+      console.log(itemCode);
+      console.log(barcodeInput);
+      // Apply filters based on input values
+      if (
+        (itemCodeInput !== "" &&
+          !itemCode.toLowerCase().includes(itemCodeInput.toLowerCase())) ||
+        (descriptionInput !== "" &&
+          !description
+            .toLowerCase()
+            .includes(descriptionInput.toLowerCase())) ||
+        (barcodeInput !== "" && !barcode.includes(barcodeInput)) ||
+        (weeCostInput !== "" &&
+          weeCost.toLowerCase() !== weeCostInput.toLowerCase()) ||
+        (!isNaN(priceFromInput) && price < priceFromInput) ||
+        (!isNaN(priceToInput) && price > priceToInput)
+      ) {
+        return; // Skip this iteration if any filter condition fails
+      }
+
+      // Generate portfolio item HTML if all filters pass
+      generatePortfolioItem(
+        itemCode,
+        description,
+        imgUrl,
+        price,
+        userFields2,
+        warehouseId
+      );
+    });
+  } catch (error) {
+    console.error("Error fetching or generating items:", error);
+  }
+
+  // Set timeouts for additional functions
+  setTimeout(initiateFastBuy, 500);
+  setTimeout(initiateAddToCart, 500);
+  setTimeout(initiateRemove, 500);
+}
+
 function addToCart(
   itemCodeVar,
   quantityVar,
