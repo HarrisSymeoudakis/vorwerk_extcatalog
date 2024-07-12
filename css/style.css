@@ -2886,6 +2886,10 @@
                   opacity: var(--bs-btn-disabled-opacity);
                 }
 
+.btn-primary:hover{
+  background:#3333
+}
+
                 .btn-primary {
                   --bs-btn-color: #fff;
                   --bs-btn-bg: #009a3b;
@@ -11408,9 +11412,11 @@
 
                   .fastBuy:hover {
             background-color: #3333;
+                    color:#009a3b
         }
         .adtocart:hover {
             background-color: #3333;
+          color:#009a3b
         }
 
         .s007 {
