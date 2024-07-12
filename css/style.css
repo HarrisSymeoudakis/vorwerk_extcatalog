@@ -2065,7 +2065,7 @@
                   background-color: #fff;
                   border-color: #009a3b;
                   outline: 0;
-                  box-shadow: 0 0 0 0.25rem rgba(255, 200, 0, 0.25);
+                  box-shadow: 0 0 0 0.25rem rgba(0, 154, 59, 0.25);
                 }
                 .form-control::-webkit-date-and-time-value {
                   height: 1.5em;
