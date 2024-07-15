@@ -39,6 +39,8 @@ async function fetchAndDisplayOrders() {
     10
   );
 
+  const searchBarInput = document.getElementById("search").value;
+
   try {
     // Fetch items data from API
     const response = await fetch(
@@ -55,13 +57,15 @@ async function fetchAndDisplayOrders() {
       const description = item.description;
       const price = item.price.taxIncludedPrice;
       const imgUrl = item.imgUrl;
-      const warehouseId = item.warehouseId;
+      const warehouseId = item.warehouse.id;
+      const onStock = item.warehouse.availableQty;
       const userFields = item.userFields;
-      const weeCost = userFields[0]?.value?.text; // Safely access weeCost
+      const weeCost = userFields[0].value.text; // Safely access weeCost
       //  console.log(userFields[1].value.text);
-      const userFields2 = userFields[1]?.value?.number; // Safely access userFields2
-      console.log(itemCode);
-      console.log(barcodeInput);
+      const userFields2 = parseFloat(userFields[1].value.number); // Safely access userFields2
+      console.log(userFields[1]);
+      // console.log(userFields2);
+      // console.log(barcodeInput);
       // Apply filters based on input values
       if (
         (itemCodeInput !== "" &&
@@ -79,15 +83,25 @@ async function fetchAndDisplayOrders() {
         return; // Skip this iteration if any filter condition fails
       }
 
+      if (
+        searchBarInput == "" ||
+        itemCode.toLowerCase().includes(searchBarInput) ||
+        description.toLowerCase().includes(searchBarInput) ||
+        barcode.includes(searchBarInput) ||
+        weeCost.toLowerCase().includes(searchBarInput)
+      ) {
+        generatePortfolioItem(
+          itemCode,
+          description,
+          imgUrl,
+          price,
+          userFields2,
+          warehouseId,
+          onStock
+        );
+      }
+
       // Generate portfolio item HTML if all filters pass
-      generatePortfolioItem(
-        itemCode,
-        description,
-        imgUrl,
-        price,
-        userFields2,
-        warehouseId
-      );
     });
   } catch (error) {
     console.error("Error fetching or generating items:", error);
@@ -155,7 +169,8 @@ function generatePortfolioItem(
   price,
   userF1,
   userF2,
-  warehouseId
+  warehouseId,
+  onStock
 ) {
   const portfolioItemsContainer = document.getElementById("portfolioItems");
   const portfolioModalId = generateUniqueId();
@@ -172,7 +187,7 @@ function generatePortfolioItem(
                 <div class="caption-hoster">
 
                 <div class='hoster'>
-                        <button onclick="addToCart('${itemCode}', 1, ${price}, ${price}, '${warehouseId}', ${price})"  id="addToCart" class="adtocart">
+                        <button onclick="addToCart('${itemCode}', 1, ${price}, ${price}, '${warehouseId}', ${price} , '${description}')"  id="addToCart" class="adtocart ">
                           <i class="fa fa-cart-plus"></i>
                         </button>
                         <button href="#" id="fastBuy" item="${itemCode}" class="fastBuy adtocart postButtonDemo">
@@ -182,6 +197,9 @@ function generatePortfolioItem(
                 <div class="portfolio-caption">
                     <div class="section-heading text-uppercase">${description}</div>
                     <div class="portfolio-caption-subheading text-muted">€${price}</div>
+
+                    
+                    <div class="right-corner" > onStock: ${onStock} items </div>
                 </div>
                 </div>
                 
@@ -209,7 +227,7 @@ function generatePortfolioItem(
                                 <p>Field 2: ${userF2}</p>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <button onclick="addToCart('${itemCode}', 1, ${price}, ${price}, '${warehouseId}', ${price})"  id="addToCart" class="adtocart ">
+                                <button  onclick="addToCart('${itemCode}', 1, ${price}, ${price}, '${warehouseId}', ${price} , '${description}' )"  id="addToCart" class="adtocart ">
                           <i class="fa fa-cart-plus"></i>
                         </button>
                                <button href="#" id="fastBuy" item="${itemCode}" class="fastBuy adtocart postButtonDemo">
@@ -253,7 +271,15 @@ function initiateFastBuy() {
 
 document.addEventListener("DOMContentLoaded", function () {
   localStorage.setItem("cartItems", "");
+  const searchInput = document.getElementById("search");
+  let debounceTimeout;
 
+  searchInput.addEventListener("input", (event) => {
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => {
+      fetchAndDisplayOrders();
+    }, 500); // 500 milliseconds debounce time
+  });
   // fetch('data.csv') // Replace with your CSV file path
   // .then(response => response.text())
   // .then(data => processCSV(data))
@@ -276,10 +302,11 @@ async function fetchAndGeneratePortfolioItems() {
         const price = item.price.taxIncludedPrice;
         const imgUrl = item.imgUrl;
         const productList = document.getElementById("products");
-        const warehouseId = item.warehouseId;
+        const warehouseId = item.warehouse.id;
+        const onStock = item.warehouse.availableQty;
         const userFields = item.userFields;
         const userFields1 = userFields[0].value.text;
-        const userFields2 = userFields[1].value.text;
+        const userFields2 = userFields[1].value.number;
 
         generatePortfolioItem(
           itemCode,
@@ -288,7 +315,8 @@ async function fetchAndGeneratePortfolioItems() {
           price,
           userFields1,
           userFields2,
-          warehouseId
+          warehouseId,
+          onStock
         );
       })
     );
@@ -296,8 +324,8 @@ async function fetchAndGeneratePortfolioItems() {
     console.log("error on generate");
   }
 
-  setTimeout(initiateFastBuy, 500);
-  setTimeout(initiateAddToCart, 500);
+  setTimeout(initiateFastBuy, 1000);
+  setTimeout(initiateAddToCart, 2000);
   setTimeout(initiateRemove, 500);
 }
 
@@ -375,7 +403,8 @@ function addToCart(
   unitPrice,
   priceWithDiscount,
   warehouseIdVar,
-  finalPrice
+  finalPrice,
+  description
 ) {
   const existingItems = localStorage.getItem("cartItems");
   const cartItems = existingItems ? JSON.parse(existingItems) : [];
@@ -409,6 +438,7 @@ function addToCart(
     cartItems.push(cartItem);
   }
   console.log(cartItems);
+  openPopup("successfully added item: " + description, 3000);
 
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
 }
