@@ -223,8 +223,9 @@ function generatePortfolioItem(
                                 <h2 class="text-uppercase">${description}</h2>
                                 <h3>Item Code: ${itemCode}</h3>
                                 <p>Price: ${price}</p>
-                                <p>Weee Cost: ${userF1}</p>
-                                <p>Weee Amount: ${userF2}</p>
+                                <p>WEEE Cost: ${userF1}</p>
+                                <p>WEEE Amount: ${userF2}</p>
+                                <p>On Stock: ${onStock}</p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <button  onclick="addToCart('${itemCode}', 1, ${price}, ${price}, '${warehouseId}', ${price} , '${description}' )"  id="addToCart" class="adtocart ">
@@ -249,6 +250,14 @@ function generatePortfolioItem(
 `;
 
   document.body.appendChild(portfolioModalContainer.firstElementChild);
+
+  const modalElement = document.getElementById(portfolioModalId);
+  modalElement.addEventListener("click", function (event) {
+    if (event.target === modalElement) {
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      modalInstance.hide();
+    }
+  });
 }
 
 var postButtonDemoElements;
