@@ -172,6 +172,9 @@ function generatePortfolioItem(
   warehouseId,
   onStock
 ) {
+  const croppedDescription = description.includes("(")
+    ? description.substring(0, description.indexOf("("))
+    : description;
   const portfolioItemsContainer = document.getElementById("portfolioItems");
   const portfolioModalId = generateUniqueId();
 
@@ -195,7 +198,7 @@ function generatePortfolioItem(
                         </button>
                     </div>  
                 <div class="portfolio-caption">
-                    <div class="section-heading text-uppercase">${description}</div>
+                    <div class="section-heading text-uppercase">${croppedDescription}</div>
                     <div class="portfolio-caption-subheading text-muted">€${price}</div>
 
                     
@@ -590,7 +593,6 @@ function closeAllModalsOnClickOutside() {
         backdrop.parentNode.removeChild(backdrop);
       }
       // Remove the modal-backdrop if exists
-      
 
       // Remove 'modal-open' class from body
       body.classList.remove("modal-open");
