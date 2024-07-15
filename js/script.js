@@ -250,14 +250,6 @@ function generatePortfolioItem(
 `;
 
   document.body.appendChild(portfolioModalContainer.firstElementChild);
-
-  const modalElement = document.getElementById(portfolioModalId);
-  modalElement.addEventListener("click", function (event) {
-    if (event.target === modalElement) {
-      const modalInstance = bootstrap.Modal.getInstance(modalElement);
-      modalInstance.hide();
-    }
-  });
 }
 
 var postButtonDemoElements;
@@ -572,6 +564,42 @@ async function getToken() {
     tokenRequest.send(tokenData);
   });
 }
+
+function closeAllModalsOnClickOutside() {
+  document.addEventListener("click", function (event) {
+    const body = document.body;
+
+    // Check if the clicked element is outside any modal
+    if (!event.target.closest(".modal-dialog")) {
+      // Find all modals that are currently shown
+      const shownModals = document.querySelectorAll(
+        ".portfolio-modal.modal.fade.show"
+      );
+
+      // Iterate over each shown modal and remove the 'show' class
+      shownModals.forEach(function (modal) {
+        modal.classList.remove("show");
+        modal.style.display = "none"; // Ensure modal is hidden
+        modal.removeAttribute("role");
+        modal.removeAttribute("aria-modal");
+        modal.setAttribute("aria-hidden", "true");
+      });
+
+      const backdrop = document.querySelector(".modal-backdrop.fade.show");
+      if (backdrop) {
+        backdrop.parentNode.removeChild(backdrop);
+      }
+      // Remove the modal-backdrop if exists
+      
+
+      // Remove 'modal-open' class from body
+      body.classList.remove("modal-open");
+      body.setAttribute("style", "");
+    }
+  });
+}
+// Call the function to initialize the click outside modal close functionality
+closeAllModalsOnClickOutside();
 
 document.getElementById("viewBasketAll").addEventListener("click", function () {
   var xhr = new XMLHttpRequest();
