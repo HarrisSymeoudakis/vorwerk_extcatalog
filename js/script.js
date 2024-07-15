@@ -223,8 +223,8 @@ function generatePortfolioItem(
                                 <h2 class="text-uppercase">${description}</h2>
                                 <h3>Item Code: ${itemCode}</h3>
                                 <p>Price: ${price}</p>
-                                <p>Field 1: ${userF1}</p>
-                                <p>Field 2: ${userF2}</p>
+                                <p>Weee Cost: ${userF1}</p>
+                                <p>Weee Amount: ${userF2}</p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <button  onclick="addToCart('${itemCode}', 1, ${price}, ${price}, '${warehouseId}', ${price} , '${description}' )"  id="addToCart" class="adtocart ">
