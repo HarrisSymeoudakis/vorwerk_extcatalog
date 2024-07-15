@@ -217,7 +217,7 @@ function generatePortfolioItem(
                 <div class="close-modal" data-bs-dismiss="modal"><img src="assets/close-icon.svg" alt="Close modal" /></div>
                 <div class="container">
                     <div class="row justify-content-center">
-                        <img class="img-fluid" src=${imageUrl} alt="..." />
+                        <img class="img" src=${imageUrl} alt="..." />
                         <div class="col-lg-8">    
                             <div class="modal-body">
                                 <h2 class="text-uppercase">${description}</h2>
@@ -236,7 +236,7 @@ function generatePortfolioItem(
                             </div>
                             <div class="d-flex justify-content-between">
                               <button item-value="${price}" item-name="${description}" item="${itemCode}"  id="addToCart" class="adtocart removeFromBasket">
-                          <i class="fa fa-cart-minus"></i>
+                          <i class="fa fa-minus"></i>
                         </button>
                                
                             </div>
@@ -269,8 +269,19 @@ function initiateFastBuy() {
   });
 }
 
+function redirectToUrl() {
+  window.location.href = "https://retail-services.cegid.cloud/et/pos/";
+}
+
+document.getElementById("return").addEventListener("click", redirectToUrl);
+
 document.addEventListener("DOMContentLoaded", function () {
   localStorage.setItem("cartItems", "");
+
+  document.getElementById("return").addEventListener("click", (event) => {
+    event.preventDefault();
+    redirectToUrl();
+  });
   const searchInput = document.getElementById("search");
   let debounceTimeout;
 
