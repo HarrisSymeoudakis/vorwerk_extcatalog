@@ -13,9 +13,10 @@
                  */
 
 .right-corner{
-                      text-align:right;
-                      
-                    }
+   position: absolute;
+    bottom: 0;
+    right: 0;
+        }
                 :root {
                   --bs-blue: #0d6efd;
                   --bs-indigo: #6610f2;
@@ -11082,7 +11083,8 @@
                 #portfolio .portfolio-item .portfolio-caption {
                   padding: 1.5rem;
                   text-align: center;
-                  height: 200px;
+                  height: 150px;
+                  position: relative;
 
                 }
                 #portfolio .portfolio-item .portfolio-caption .portfolio-caption-heading {
