@@ -646,7 +646,7 @@
                 }
 
                 .img-fluid {
-                  width: 350px;
+                  width: 250px;
                   height: auto;
                 }
 
@@ -11053,7 +11053,7 @@
                   }
                 }
                 #portfolio .portfolio-item {
-                  max-width: 350px;
+                  max-width: 250px;
                   margin-left: auto;
                   margin-right: auto;
                 }
