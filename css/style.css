@@ -2898,8 +2898,8 @@
 
                 .btn-primary {
                   --bs-btn-color: #fff;
-                  --bs-btn-bg: #009a3b;
-                  --bs-btn-border-color: #009a3b;
+                  --bs-btn-bg: black;
+                  --bs-btn-border-color: black;
                   --bs-btn-hover-color: #fff;
                   --bs-btn-hover-bg: #009a3b;
                   --bs-btn-hover-border-color: #009a3b;
