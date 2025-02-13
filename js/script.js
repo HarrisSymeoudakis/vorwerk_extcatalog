@@ -314,6 +314,7 @@ async function fetchAndGeneratePortfolioItems() {
     console.log(data);
     await Promise.all(
       data.map(async (item) => {
+        console.log(item);
         const itemCode = item.identifier.id;
         const title = item.description;
         const price = item.price.taxIncludedPrice;
