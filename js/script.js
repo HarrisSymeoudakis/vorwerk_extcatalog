@@ -7,6 +7,8 @@ function searchOnClick(event) {
 document
   .getElementById("searchButton")
   .addEventListener("click", searchOnClick);
+  
+
 
 // Function to fetch data and display portfolio items
 async function fetchAndDisplayOrders() {
