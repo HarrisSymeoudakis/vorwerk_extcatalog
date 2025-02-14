@@ -64,8 +64,8 @@ async function fetchAndDisplayOrders() {
       const userFields = item.userFields;
       const weeCost = userFields[0].value.text; // Safely access weeCost
       //  console.log(userFields[1].value.text);
-      const userFields2 = parseFloat(userFields[1].value.number); // Safely access userFields2
-      console.log(userFields[1]);
+      // const userFields2 = parseFloat(userFields[1].value.number); // Safely access userFields2
+      // console.log(userFields[1]);
       // console.log(userFields2);
       // console.log(barcodeInput);
       // Apply filters based on input values
@@ -77,8 +77,8 @@ async function fetchAndDisplayOrders() {
             .toLowerCase()
             .includes(descriptionInput.toLowerCase())) ||
         (barcodeInput !== "" && !barcode.includes(barcodeInput)) ||
-        (weeCostInput !== "" &&
-          weeCost.toLowerCase() !== weeCostInput.toLowerCase()) ||
+        // (weeCostInput !== "" &&
+          // weeCost.toLowerCase() !== weeCostInput.toLowerCase()) ||
         (!isNaN(priceFromInput) && price < priceFromInput) ||
         (!isNaN(priceToInput) && price > priceToInput)
       ) {
@@ -89,15 +89,15 @@ async function fetchAndDisplayOrders() {
         searchBarInput == "" ||
         itemCode.toLowerCase().includes(searchBarInput) ||
         description.toLowerCase().includes(searchBarInput) ||
-        barcode.includes(searchBarInput) ||
-        weeCost.toLowerCase().includes(searchBarInput)
+        barcode.includes(searchBarInput) 
+        // || weeCost.toLowerCase().includes(searchBarInput)
       ) {
         generatePortfolioItem(
           itemCode,
           description,
           imgUrl,
           price,
-          userFields2,
+          // userFields2,
           warehouseId,
           onStock
         );
@@ -169,8 +169,8 @@ function generatePortfolioItem(
   description,
   imageUrl,
   price,
-  userF1,
-  userF2,
+  // userF1,
+  // userF2,
   warehouseId,
   onStock
 ) {
@@ -228,8 +228,7 @@ function generatePortfolioItem(
                                 <h2 class="text-uppercase">${description}</h2>
                                 <h3>Item Code: ${itemCode}</h3>
                                 <p>Price: ${price}</p>
-                                <p>WEEE Cost: ${userF1}</p>
-                                <p>WEEE Amount: ${userF2}</p>
+                               
                                 <p>On Stock: ${onStock}</p>
                             </div>
                             <div class="d-flex justify-content-between">
@@ -323,16 +322,16 @@ async function fetchAndGeneratePortfolioItems() {
         const warehouseId = item.warehouse.id;
         const onStock = item.warehouse.availableQty;
         const userFields = item.userFields;
-        const userFields1 = userFields[0].value.text;
-        const userFields2 = userFields[1].value.number;
+        // const userFields1 = userFields[0].value.text;
+        // const userFields2 = userFields[1].value.number;
 
         generatePortfolioItem(
           itemCode,
           title,
           imgUrl,
           price,
-          userFields1,
-          userFields2,
+          // userFields1,
+          // userFields2,
           warehouseId,
           onStock
         );
