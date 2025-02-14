@@ -62,7 +62,7 @@ async function fetchAndDisplayOrders() {
       const warehouseId = item.warehouse.id;
       const onStock = item.warehouse.availableQty;
       const userFields = item.userFields;
-      const weeCost = userFields[0].value.text; // Safely access weeCost
+      // const weeCost = userFields[0].value.text; // Safely access weeCost
       //  console.log(userFields[1].value.text);
       // const userFields2 = parseFloat(userFields[1].value.number); // Safely access userFields2
       // console.log(userFields[1]);
